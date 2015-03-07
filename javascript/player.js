@@ -44,6 +44,7 @@ Player.prototype.handleEvent = function(e) {
   this._x = newX;
   this._y = newY;
   this._draw();
+  this._checkCity();
   window.removeEventListener("keydown", this);
   Game.engine.unlock();
 }
@@ -51,4 +52,11 @@ Player.prototype.handleEvent = function(e) {
 Player.prototype.act = function() {
     Game.engine.lock();
     window.addEventListener("keydown", this);
+}
+
+Player.prototype._checkCity = function() {
+  var key = this._x + "," + this._y;
+  if (Game.map[key] == "C") {
+      alert("Welcome to the City!");
+  }
 }

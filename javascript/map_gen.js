@@ -26,6 +26,7 @@ Game._generateMap = function () {
   }
   mapMaker.create(cellCallback.bind(this));
   this._setForests(freeCells);
+  this._setCities();
   this._drawMap();
   this._createPlayer(freeCells);
 }
@@ -39,8 +40,21 @@ Game._drawMap = function() {
       this.display.draw(x, y, this.map[key], "#4B2803");
     } else if (this.map[key] == "*") {
       this.display.draw(x, y, this.map[key], "#013220");
+    } else if (this.map[key] == "C") {
+      this.display.draw(x, y, this.map[key]);
     }
   }
+}
+
+Game._setCities = function() {
+  var y = Math.floor(Math.random() * 24) + 1;
+  var x = Math.floor(Math.random() * 2) + 1;
+  var key = x+','+y;
+  this.map[key] = "C";
+  x = Math.floor(Math.random() * 2) + 75;
+  y = Math.floor(Math.random() * 24) + 1;
+  key = x+','+y;
+  this.map[key] = "C";
 }
 
 Game._setForests = function(freeCells) {
