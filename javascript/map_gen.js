@@ -18,13 +18,13 @@ Game._generateMap = function () {
       takenCells.push(key);
       allCells.push(key);
       this.map[key] = ["^"];
-      this.map[key][1] = "#4B2803";
+      this.map[key][1] = {"color": "#4B2803"};
     } else {
       var key = x+","+y;
       freeCells.push(key);
       allCells.push(key);
       this.map[key] = [" "];
-      this.map[key][1] = "#0000";
+      this.map[key][1] = {"color": "#0000"};
     };
   };
   mapMaker.create(cellCallback.bind(this));
@@ -40,11 +40,11 @@ Game._drawMap = function() {
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
     if(this.map[key][0] == "^") {
-      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
     } else if (this.map[key][0] == "*") {
-      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
     } else if (this.map[key][0] == "C") {
-      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
     }
   }
 }
@@ -54,12 +54,12 @@ Game._setCities = function() {
   var x = Math.floor(Math.random() * 2) + 1;
   var key = x+','+y;
   this.map[key][0] = "C";
-  this.map[key][1] = "#FFFFFF";
+  this.map[key][1] = {"color": "#FFFFFF"};
   x = Math.floor(Math.random() * 2) + 75;
   y = Math.floor(Math.random() * 24) + 1;
   key = x+','+y;
   this.map[key][0] = "C";
-  this.map[key][1] = "#FFFFFF";
+  this.map[key][1] = {"color": "#FFFFFF"};
 }
 
 Game._setForests = function(freeCells) {
@@ -71,7 +71,7 @@ Game._setForests = function(freeCells) {
     var y = parseInt(parts[1]);
     var fW = 10, fH = 10;
     var newKey = "0,0";
-    var choices = [[' ', "#000"], ['*', "#013220"], ['*', "#013220"], ['*', "#013220"]];
+    var choices = [[' ', {"color": "#000"}], ['*', {"color": "#013220"}], ['*', {"color": "#013220"}], ['*', {"color": "#013220"}]];
 
     for (var j = 0; j < fW; j++) {
       for (var k = 0; k < fH; k++) {
@@ -80,7 +80,7 @@ Game._setForests = function(freeCells) {
         randomChoice = choices.random();
         if(this.map[newKey]) {
           this.map[newKey][0] = randomChoice[0];
-          this.map[newKey][1] = randomChoice[1];
+          this.map[newKey][1]['color'] = randomChoice[1];
         };
       };
       y -= 10;
@@ -89,7 +89,7 @@ Game._setForests = function(freeCells) {
       randomChoice = choices.random();
       if(this.map[newKey]) {
         this.map[newKey][0] = randomChoice[0];
-        this.map[newKey][1] = randomChoice[1];
+        this.map[newKey][1]['color'] = randomChoice[1];
       };
     }
 
@@ -118,7 +118,7 @@ var overGrowth = function (x, y) {
     console.log(neighbor);
     if(Game.map[neighbor][0] != "^") {
       Game.map[neighbor][0] = "*";
-      Game.map[neighbor][1] = "#013220";
+      Game.map[neighbor][1]['color'] = "#013220";
     };
   };
 }
