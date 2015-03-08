@@ -31,7 +31,8 @@ Game._generateMap = function () {
   this._setForests(freeCells);
   this._setCities();
   this._drawMap();
-  this._createPlayer(freeCells);
+  this.player = this._createEntity(Player, freeCells);
+  this.enemy = this._createEntity(Enemy, freeCells);
 }
 
 Game._drawMap = function() {
@@ -80,7 +81,7 @@ Game._setForests = function(freeCells) {
         randomChoice = choices.random();
         if(this.map[newKey]) {
           this.map[newKey][0] = randomChoice[0];
-          this.map[newKey][1]['color'] = randomChoice[1];
+          this.map[newKey][1] = randomChoice[1];
         };
       };
       y -= 10;
@@ -89,7 +90,7 @@ Game._setForests = function(freeCells) {
       randomChoice = choices.random();
       if(this.map[newKey]) {
         this.map[newKey][0] = randomChoice[0];
-        this.map[newKey][1]['color'] = randomChoice[1];
+        this.map[newKey][1] = randomChoice[1];
       };
     }
 
@@ -115,7 +116,6 @@ var overGrowth = function (x, y) {
     };
 
     var neighbor = x+','+y;
-    console.log(neighbor);
     if(Game.map[neighbor][0] != "^") {
       Game.map[neighbor][0] = "*";
       Game.map[neighbor][1]['color'] = "#013220";

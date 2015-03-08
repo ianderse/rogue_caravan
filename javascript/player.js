@@ -8,16 +8,21 @@ Player.prototype._draw = function() {
   Game.display.draw(this._x, this._y, "@", "#ff0");
 }
 
-Game.player = null;
+Player.prototype.getX = function() { return this._x; }
+Player.prototype.getY = function() { return this._y; }
 
-Game._createPlayer = function(freeCells) {
-  var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
-  var key = freeCells.splice(index, 1)[0];
-  var parts = key.split(",");
-  var x = parseInt(parts[0]);
-  var y = parseInt(parts[1]);
-  this.player = new Player(x, y);
-};
+Player.prototype.isVisible = function() {
+  var key = this._x + "," + this._y;
+  if(Game.map[key][0] != "*") {
+    console.log('visible');
+    return true;
+  } else {
+    console.log('invisible');
+    return false;
+  };
+}
+
+Game.player = null;
 
 Player.prototype.handleEvent = function(e) {
   var keyMap = {};
