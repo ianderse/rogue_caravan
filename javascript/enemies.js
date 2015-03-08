@@ -1,11 +1,14 @@
 var Enemy = function(x, y) {
-    this._x = x;
-    this._y = y;
-    this._draw();
+  this._x = x;
+  this._y = y;
+  this._draw();
+  this.speed = 50;
 }
 
+Enemy.prototype.getSpeed = function() { return this.speed; }
+
 Enemy.prototype._draw = function() {
-    Game.display.draw(this._x, this._y, "B", "red");
+  Game.display.draw(this._x, this._y, "B", "red");
 }
 
 Enemy.prototype.act = function() {

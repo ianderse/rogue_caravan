@@ -2,6 +2,7 @@ var Player = function(x, y) {
   this._x = x;
   this._y = y;
   this._draw();
+  this.speed = 100;
 }
 
 Player.prototype._draw = function() {
@@ -10,6 +11,7 @@ Player.prototype._draw = function() {
 
 Player.prototype.getX = function() { return this._x; }
 Player.prototype.getY = function() { return this._y; }
+Player.prototype.getSpeed = function() { return this.speed; }
 
 Player.prototype.isVisible = function() {
   var key = this._x + "," + this._y;

@@ -1,7 +1,10 @@
 var Game = {
   display: null,
+  currentScreen: null,
   player: null,
   engine: null,
+  gameOver: false,
+  score: 0,
 
   init: function() {
     this.display = new ROT.Display();
@@ -10,24 +13,48 @@ var Game = {
       fontStyle: "bold",
       bg: "#44783E"
     });
+
+    var game = this;
+    var bindEventToScreen = function(event) {
+      window.addEventListener(event, function(e) {
+        if (game.currentScreen !== null) {
+          game.currentScreen.handleInput(event, e);
+        }
+      });
+    }
+    bindEventToScreen('keydown');
+    bindEventToScreen('keyup');
+    bindEventToScreen('keypress');
+
     document.body.appendChild(this.display.getContainer());
-    this._generateMap();
+    Game.switchScreen(Game.Screen.startScreen);
+  },
 
-    var scheduler = new ROT.Scheduler.Simple();
-    scheduler.add(this.player, true);
-    scheduler.add(this.player, true);
-    scheduler.add(this.enemy, true);
+  getDisplay: function() {
+    return this.display;
+  },
 
-    this.engine = new ROT.Engine(scheduler);
-    this.engine.start();
+  switchScreen: function(screen) {
+    if (this.currentScreen !== null) {
+      this.currentScreen.exit();
+    };
+    this.getDisplay().clear();
+
+    this.currentScreen = screen;
+    if (!this.currentScreen !== null) {
+        this.currentScreen.enter();
+        this.currentScreen.render(this.display);
+    };
   }
 }
 
-Game._createEntity = function(what, freeCells) {
+Game._createEntity = function(what, freeCells, x, y) {
   var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
   var key = freeCells.splice(index, 1)[0];
   var parts = key.split(",");
-  var x = parseInt(parts[0]);
-  var y = parseInt(parts[1]);
+  if (!x) {
+    var x = parseInt(parts[0]);
+    var y = parseInt(parts[1]);
+  }
   return new what(x, y);
 }

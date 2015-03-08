@@ -31,7 +31,7 @@ Game._generateMap = function () {
   this._setForests(freeCells);
   this._setCities();
   this._drawMap();
-  this.player = this._createEntity(Player, freeCells);
+  this.player = this._createEntity(Player, freeCells, 3, 10);
   this.enemy = this._createEntity(Enemy, freeCells);
 }
 
