@@ -5,6 +5,8 @@ var Game = {
   engine: null,
   gameOver: false,
   score: 0,
+  firstCityKey: null,
+  secondCityKey: null,
 
   init: function() {
     this.display = new ROT.Display();

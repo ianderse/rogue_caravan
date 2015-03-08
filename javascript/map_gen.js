@@ -58,13 +58,16 @@ Game._setCities = function() {
   var y = Math.floor(Math.random() * 24) + 1;
   var x = Math.floor(Math.random() * 2) + 1;
   var key = x+','+y;
+  Game.firstCityKey = key;
   this.map[key][0] = "C";
   this.map[key][1] = {"color": "#FFFFFF"};
   x = Math.floor(Math.random() * 2) + 75;
   y = Math.floor(Math.random() * 24) + 1;
   key = x+','+y;
+  Game.secondCityKey = key;
   this.map[key][0] = "C";
   this.map[key][1] = {"color": "#FFFFFF"};
+  this.map[key][1] = {"target": true};
 }
 
 Game._setForests = function(freeCells) {

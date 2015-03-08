@@ -62,8 +62,16 @@ Player.prototype.act = function() {
 
 Player.prototype._checkCity = function() {
   var key = this._x + "," + this._y;
-  if (Game.map[key][0] == "C") {
-      alert("Welcome to the City!");
+  if (Game.map[key][0] == "C" && Game.map[key][1]['target'] == true) {
+    if(Game.map[Game.firstCityKey][1]['target'] == true) {
+      Game.map[Game.firstCityKey][1]['target'] = false;
+      Game.map[Game.secondCityKey][1]['target'] = true;
+    } else if (Game.map[Game.secondCityKey][1]['target'] == true) {
+      Game.map[Game.secondCityKey][1]['target'] = false;
+      Game.map[Game.firstCityKey][1]['target'] = true;
+    };
+    Game.score += 1000
+    Game.display.drawText(5, 0, Game.score.toString());
   };
 }
 
