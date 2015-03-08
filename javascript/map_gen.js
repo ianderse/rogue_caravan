@@ -17,13 +17,16 @@ Game._generateMap = function () {
       var key = x+","+y;
       takenCells.push(key);
       allCells.push(key);
-      this.map[key] = "^";
-    }
-
-    var key = x+","+y;
-    freeCells.push(key);
-    allCells.push(key);
-  }
+      this.map[key] = ["^"];
+      this.map[key][1] = "#4B2803";
+    } else {
+      var key = x+","+y;
+      freeCells.push(key);
+      allCells.push(key);
+      this.map[key] = [" "];
+      this.map[key][1] = "#0000";
+    };
+  };
   mapMaker.create(cellCallback.bind(this));
   this._setForests(freeCells);
   this._setCities();
@@ -36,12 +39,12 @@ Game._drawMap = function() {
     var parts = key.split(",");
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
-    if(this.map[key] == "^") {
-      this.display.draw(x, y, this.map[key], "#4B2803");
-    } else if (this.map[key] == "*") {
-      this.display.draw(x, y, this.map[key], "#013220");
-    } else if (this.map[key] == "C") {
-      this.display.draw(x, y, this.map[key]);
+    if(this.map[key][0] == "^") {
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
+    } else if (this.map[key][0] == "*") {
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
+    } else if (this.map[key][0] == "C") {
+      this.display.draw(x, y, this.map[key][0], this.map[key][1]);
     }
   }
 }
@@ -50,11 +53,13 @@ Game._setCities = function() {
   var y = Math.floor(Math.random() * 24) + 1;
   var x = Math.floor(Math.random() * 2) + 1;
   var key = x+','+y;
-  this.map[key] = "C";
+  this.map[key][0] = "C";
+  this.map[key][1] = "#FFFFFF";
   x = Math.floor(Math.random() * 2) + 75;
   y = Math.floor(Math.random() * 24) + 1;
   key = x+','+y;
-  this.map[key] = "C";
+  this.map[key][0] = "C";
+  this.map[key][1] = "#FFFFFF";
 }
 
 Game._setForests = function(freeCells) {
@@ -64,22 +69,28 @@ Game._setForests = function(freeCells) {
     var parts = key.split(",");
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
-
     var fW = 10, fH = 10;
-    var newKey = "";
-    var choices = [' ', '*', '*', '*'];
+    var newKey = "0,0";
+    var choices = [[' ', "#000"], ['*', "#013220"], ['*', "#013220"], ['*', "#013220"]];
 
     for (var j = 0; j < fW; j++) {
-      y -= k;
       for (var k = 0; k < fH; k++) {
         y += 1;
         newKey = x+','+y;
-
-        this.map[newKey] = choices.random();;
-      }
+        randomChoice = choices.random();
+        if(this.map[newKey]) {
+          this.map[newKey][0] = randomChoice[0];
+          this.map[newKey][1] = randomChoice[1];
+        };
+      };
+      y -= 10;
       x+=1;
       newKey = x+','+y;
-      this.map[newKey] = choices.random();
+      randomChoice = choices.random();
+      if(this.map[newKey]) {
+        this.map[newKey][0] = randomChoice[0];
+        this.map[newKey][1] = randomChoice[1];
+      };
     }
 
     overGrowth(x, y);
@@ -90,10 +101,24 @@ var overGrowth = function (x, y) {
   while ((Math.floor(ROT.RNG.getUniform() * 50)) > 5) {
     x = [-1, 1].random() + x;
     y = [-1, 1].random() + y;
-    console.log(x,y);
+
+    if (x >= 79) {
+      x = 79;
+    } else if (x <= 0) {
+      x = 0;
+    };
+
+    if (y >= 24) {
+      y = 24;
+    } else if (y <= 0) {
+      y = 0;
+    };
+
     var neighbor = x+','+y;
-    if(Game.map[neighbor] != "^") {
-      Game.map[neighbor] = "*"
+    console.log(neighbor);
+    if(Game.map[neighbor][0] != "^") {
+      Game.map[neighbor][0] = "*";
+      Game.map[neighbor][1] = "#013220";
     };
   };
 }

@@ -40,7 +40,7 @@ Player.prototype.handleEvent = function(e) {
   var newY = this._y + dir[1];
   var newKey = newX + "," + newY;
 
-  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y]);
+  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]);
   this._x = newX;
   this._y = newY;
   this._draw();
@@ -56,7 +56,8 @@ Player.prototype.act = function() {
 
 Player.prototype._checkCity = function() {
   var key = this._x + "," + this._y;
-  if (Game.map[key] == "C") {
+  console.log(Game.map[key]);
+  if (Game.map[key][0] == "C") {
       alert("Welcome to the City!");
   }
 }
