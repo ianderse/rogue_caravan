@@ -38,14 +38,18 @@ Enemy.prototype.act = function() {
       Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
       this._x = x;
       this._y = y;
-      if(Game.map[this._x+","+this._y][0] == "^") {
-        this.speed = 25;
-      } else if(Game.map[this._x+","+this._y][0] == " ") {
-        this.speed = 50;
-      } else if(Game.map[this._x+","+this._y][0] == "*") {
-        this.speed = 50;
-      };
+      this._checkTerrain();
       this._draw();
     };
+  };
+}
+
+Enemy.prototype._checkTerrain = function () {
+  if(Game.map[this._x+","+this._y][0] == "^") {
+    this.speed = 25;
+  } else if(Game.map[this._x+","+this._y][0] == " ") {
+    this.speed = 50;
+  } else if(Game.map[this._x+","+this._y][0] == "*") {
+    this.speed = 50;
   };
 }
