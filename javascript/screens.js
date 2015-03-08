@@ -5,8 +5,8 @@ Game.Screen.startScreen = {
   exit: function() { console.log("Exited start screen."); },
   render: function(display) {
     // Render our prompt to the screen
-    display.drawText(30,13, "%c{yellow}Rogue Trader");
-    display.drawText(30,14, "Press [Enter] to start!");
+    display.drawText(27,10, "%c{yellow}Rogue Caravan");
+    display.drawText(27,11, "Press [Enter] to start!");
   },
   handleInput: function(inputType, inputData) {
     if (inputType === 'keydown') {
@@ -25,7 +25,9 @@ Game.Screen.playScreen = {
 
     var scheduler = new ROT.Scheduler.Speed();
     scheduler.add(Game.player, true);
-    scheduler.add(Game.enemy, true);
+    _.each(Game.enemy, function(enemy) {
+      scheduler.add(enemy, true);
+    });
 
     Game.engine = new ROT.Engine(scheduler);
     Game.engine.start();

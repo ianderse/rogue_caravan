@@ -70,6 +70,8 @@ Player.prototype._checkCity = function() {
 Player.prototype._checkMountain = function() {
   var key = this._x + "," + this._y;
   if (Game.map[key][0] == "^") {
-    Game.enemy.act();
+    _.each(Game.enemy, function(enemy) {
+      enemy.act();
+    });
   };
 }

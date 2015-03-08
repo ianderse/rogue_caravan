@@ -17,7 +17,8 @@ Enemy.prototype.act = function() {
     var passableCallback = function(x, y) {
       return (x+","+y in Game.map);
     }
-    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology:4});
+    var topo = [4,8].random();
+    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
 
     var path = [];
     var pathCallback = function(x, y) {
@@ -28,8 +29,8 @@ Enemy.prototype.act = function() {
     path.shift();
 
     if (path.length <= 1) {
-        Game.engine.lock();
-        alert("Game over - you were captured by a Bandit!");
+      Game.gameOver = true;
+      Game.engine.lock();
     } else {
       if(Game.player.isVisible() == true || path.length < 5 ) {
         x = path[0][0];
