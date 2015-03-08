@@ -7,6 +7,8 @@ var Game = {
   score: 0,
   firstCityKey: null,
   secondCityKey: null,
+  turnCounter: 0,
+  scheduler: new ROT.Scheduler.Speed(),
 
   init: function() {
     this.display = new ROT.Display();
@@ -51,12 +53,22 @@ var Game = {
 }
 
 Game._createEntity = function(what, freeCells, x, y) {
-  var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
-  var key = freeCells.splice(index, 1)[0];
-  var parts = key.split(",");
   if (!x) {
+    var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
+    var key = freeCells.splice(index, 1)[0];
+    var parts = key.split(",");
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
   }
   return new what(x, y);
+}
+
+Game._addEnemy = function() {
+  var topOrBottom = [1, 24].random();
+  var leftOrRight = [1, 79].random();
+  console.log('test');
+  this.enemy.push(this._createEntity(Enemy, [], leftOrRight, topOrBottom));
+  var enemy = _.last(this.enemy);
+  Game.scheduler.add(enemy, true);
+  enemy._draw();
 }

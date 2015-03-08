@@ -4,7 +4,6 @@ Game.Screen.startScreen = {
   enter: function() {    console.log("Entered start screen."); },
   exit: function() { console.log("Exited start screen."); },
   render: function(display) {
-    // Render our prompt to the screen
     display.drawText(27,10, "%c{yellow}Rogue Caravan");
     display.drawText(27,11, "Press [Enter] to start!");
   },
@@ -23,13 +22,12 @@ Game.Screen.playScreen = {
   render: function(display) {
     Game._generateMap();
 
-    var scheduler = new ROT.Scheduler.Speed();
-    scheduler.add(Game.player, true);
+    Game.scheduler.add(Game.player, true);
     _.each(Game.enemy, function(enemy) {
-      scheduler.add(enemy, true);
+      Game.scheduler.add(enemy, true);
     });
 
-    Game.engine = new ROT.Engine(scheduler);
+    Game.engine = new ROT.Engine(Game.scheduler);
     Game.engine.start();
   },
   handleInput: function(inputType, inputData) {
@@ -43,7 +41,6 @@ Game.Screen.gameOverScreen = {
   enter: function() {    console.log("Entered lose screen."); },
   exit: function() { console.log("Exited lose screen."); },
   render: function(display) {
-    // Render our prompt to the screen
     for (var i = 0; i < 22; i++) {
       display.drawText(2, i + 1, "%b{red}You lose! :(");
     }

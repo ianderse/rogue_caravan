@@ -36,10 +36,8 @@ Player.prototype.handleEvent = function(e) {
   keyMap[36] = 7;
 
   var code = e.keyCode;
-  /* one of numpad directions? */
   if (!(code in keyMap)) { return; }
 
-  /* is there a free space? */
   var dir = ROT.DIRS[8][keyMap[code]];
   var newX = this._x + dir[0];
   var newY = this._y + dir[1];
@@ -57,6 +55,11 @@ Player.prototype.handleEvent = function(e) {
 
 Player.prototype.act = function() {
     Game.engine.lock();
+    Game.turnCounter += 1;
+    console.log(Game.turnCounter);
+    if(Game.turnCounter % 50 == 0) {
+      Game._addEnemy();
+    }
     window.addEventListener("keydown", this);
 }
 
