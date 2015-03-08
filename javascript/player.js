@@ -14,10 +14,8 @@ Player.prototype.getY = function() { return this._y; }
 Player.prototype.isVisible = function() {
   var key = this._x + "," + this._y;
   if(Game.map[key][0] != "*") {
-    console.log('visible');
     return true;
   } else {
-    console.log('invisible');
     return false;
   };
 }
@@ -50,6 +48,7 @@ Player.prototype.handleEvent = function(e) {
   this._y = newY;
   this._draw();
   this._checkCity();
+  this._checkMountain();
   window.removeEventListener("keydown", this);
   Game.engine.unlock();
 }
@@ -63,5 +62,12 @@ Player.prototype._checkCity = function() {
   var key = this._x + "," + this._y;
   if (Game.map[key][0] == "C") {
       alert("Welcome to the City!");
-  }
+  };
+}
+
+Player.prototype._checkMountain = function() {
+  var key = this._x + "," + this._y;
+  if (Game.map[key][0] == "^") {
+    Game.enemy.act();
+  };
 }

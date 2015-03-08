@@ -20,7 +20,6 @@ var Game = {
 
     this.engine = new ROT.Engine(scheduler);
     this.engine.start();
-
   }
 }
 
