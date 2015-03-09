@@ -9,6 +9,7 @@ var Game = {
   secondCityKey: null,
   turnCounter: 0,
   scheduler: new ROT.Scheduler.Speed(),
+  freeCells: [],
 
   init: function() {
     this.display = new ROT.Display();
@@ -72,6 +73,24 @@ Game._addEnemy = function() {
   var enemy = _.last(this.enemy);
   Game.scheduler.add(enemy, true);
   enemy._draw();
+}
+
+Game._resetEnemies = function(num) {
+  _.each(Game.enemy, function(enemy) {
+    enemy.removeEnemy();
+  });
+
+  Game.enemy = [];
+  for(var i = 0; i < num; i++) {
+    this.enemy.push(this._createEntity(Enemy, Game.freeCells));
+  };
+
+  _.each(Game.enemy, function(enemy) {
+    Game.scheduler.add(enemy, true);
+    enemy._draw();
+  });
+
+  Game._drawMap();
 }
 
 Game._reset = function() {

@@ -1,6 +1,5 @@
 Game._generateMap = function () {
   this.map = {};
-  var freeCells = [];
   var takenCells = [];
   var allCells = [];
 
@@ -21,21 +20,21 @@ Game._generateMap = function () {
       this.map[key][1] = {"color": "#4B2803"};
     } else {
       var key = x+","+y;
-      freeCells.push(key);
+      Game.freeCells.push(key);
       allCells.push(key);
       this.map[key] = [" "];
       this.map[key][1] = {"color": "#0000"};
     };
   };
   mapMaker.create(cellCallback.bind(this));
-  this._setForests(freeCells);
+  this._setForests(Game.freeCells);
   this._setCities();
   this._drawMap();
-  this.player = this._createEntity(Player, freeCells, 3, 10);
-  this.enemy = [this._createEntity(Enemy, freeCells)];
+  this.player = this._createEntity(Player, Game.freeCells, 3, 10);
+  this.enemy = [this._createEntity(Enemy, Game.freeCells)];
 
   for(var i = 0; i < 4; i++) {
-    this.enemy.push(this._createEntity(Enemy, freeCells));
+    this.enemy.push(this._createEntity(Enemy, Game.freeCells));
   }
 }
 
@@ -50,6 +49,8 @@ Game._drawMap = function() {
       this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
     } else if (this.map[key][0] == "C") {
       this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
+    } else if (this.map[key][0] == ' ') {
+      this.display.draw(x, y, this.map[key][0]);
     }
   }
 }

@@ -22,8 +22,6 @@ Player.prototype.isVisible = function() {
   };
 }
 
-Game.player = null;
-
 Player.prototype.handleEvent = function(e) {
   var keyMap = {};
   keyMap[38] = 0;
@@ -73,8 +71,9 @@ Player.prototype._checkCity = function() {
       Game.map[Game.secondCityKey][1]['target'] = false;
       Game.map[Game.firstCityKey][1]['target'] = true;
     };
-    Game.score += 1000
+    Game.score += 1000;
     Game.display.drawText(5, 0, Game.score.toString());
+    Game._resetEnemies(Game.enemy.length);
   };
 }
 

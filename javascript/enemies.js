@@ -6,6 +6,15 @@ var Enemy = function(x, y) {
 }
 
 Enemy.prototype.getSpeed = function() { return this.speed; }
+Enemy.prototype.getX = function() { return this._x; }
+Enemy.prototype.getY = function() { return this._y; }
+
+Enemy.prototype.removeEnemy = function() {
+  var key = this.getX() + ',' + this.getY();
+  Game.map[key][0] = ' ';
+  Game.scheduler.remove(this);
+  /* add map loc to freecells */
+}
 
 Enemy.prototype._draw = function() {
   Game.display.draw(this._x, this._y, "B", "red");
