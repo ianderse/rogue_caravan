@@ -25,7 +25,6 @@ Game.Screen.playScreen = {
   exit: function() { console.log("Exited play screen."); },
   render: function(display) {
     Game._generateMap();
-
     Game.scheduler.add(Game.player, true);
     _.each(Game.enemy, function(enemy) {
       Game.scheduler.add(enemy, true);
@@ -43,12 +42,19 @@ Game.Screen.playScreen = {
 
 Game.Screen.gameOverScreen = {
   enter: function() {    console.log("Entered lose screen."); },
-  exit: function() { console.log("Exited lose screen."); },
+  exit: function() {
+    Game._reset();
+    console.log("Exited lose screen.");
+  },
   render: function(display) {
-    for (var i = 0; i < 22; i++) {
-      display.drawText(2, i + 1, "%b{red}You lose! :(");
-    }
+    display.drawText(32, 5, "%b{red}The Bandits caught you!");
+    display.drawText(27,20, "Press [Enter] to play again!");
   },
   handleInput: function(inputType, inputData) {
+    if (inputType === 'keydown') {
+      if (inputData.keyCode === ROT.VK_RETURN) {
+        Game.switchScreen(Game.Screen.startScreen);
+      }
+    }
   }
 }

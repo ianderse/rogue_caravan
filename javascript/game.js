@@ -72,3 +72,14 @@ Game._addEnemy = function() {
   Game.scheduler.add(enemy, true);
   enemy._draw();
 }
+
+Game._reset = function() {
+  Game.gameOver = false;
+  Game.scheduler.clear();
+  Game.display.clear();
+  Game.enemy = null;
+  Game.map = null;
+  Game.player = null;
+  Game.score = 0;
+  Game.turnCounter = 0;
+}

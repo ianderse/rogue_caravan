@@ -1,5 +1,5 @@
-Game.map = {};
 Game._generateMap = function () {
+  this.map = {};
   var freeCells = [];
   var takenCells = [];
   var allCells = [];
