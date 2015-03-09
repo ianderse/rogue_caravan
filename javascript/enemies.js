@@ -13,7 +13,7 @@ Enemy.prototype.removeEnemy = function() {
   var key = this.getX() + ',' + this.getY();
   Game.map[key][0] = ' ';
   Game.scheduler.remove(this);
-  /* add map loc to freecells */
+  Game.freeCells.push(key);
 }
 
 Enemy.prototype._draw = function() {

@@ -8,7 +8,6 @@ Game._generateMap = function () {
     born: [4, 5, 6, 7, 8],
     survive: [2, 3, 4, 5]
   });
-
   mapMaker.randomize(0.8);
 
   var cellCallback = function(x, y, value) {
@@ -51,8 +50,8 @@ Game._drawMap = function() {
       this.display.draw(x, y, this.map[key][0], this.map[key][1]['color']);
     } else if (this.map[key][0] == ' ') {
       this.display.draw(x, y, this.map[key][0]);
-    }
-  }
+    };
+  };
 }
 
 Game._setCities = function() {
@@ -71,10 +70,10 @@ Game._setCities = function() {
   this.map[key][1] = {"target": true};
 }
 
-Game._setForests = function(freeCells) {
+Game._setForests = function() {
   for (var i = 0; i < 5; i++) {
-    var index = Math.floor(ROT.RNG.getUniform() * freeCells.length);
-    var key = freeCells.splice(index, 1)[0];
+    var index = Math.floor(ROT.RNG.getUniform() * Game.freeCells.length);
+    var key = Game.freeCells.splice(index, 1)[0];
     var parts = key.split(",");
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);

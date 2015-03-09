@@ -102,4 +102,5 @@ Game._reset = function() {
   Game.player = null;
   Game.score = 0;
   Game.turnCounter = 0;
+  Game.freeCells = [];
 }
