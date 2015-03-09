@@ -4,8 +4,12 @@ Game.Screen.startScreen = {
   enter: function() {    console.log("Entered start screen."); },
   exit: function() { console.log("Exited start screen."); },
   render: function(display) {
-    display.drawText(27,10, "%c{yellow}Rogue Caravan");
-    display.drawText(27,11, "Press [Enter] to start!");
+    display.drawText(32,5, "%c{yellow}Rogue Caravan");
+    display.drawText(10,7, "%c{red}B%c{white}: Bandits. If they catch you, game over.");
+    display.drawText(10,9, "%c{#4B2803}^%c{white}: Mountains. When Bandits cross mountains, they are slowed by half, but when you move through them allow bandits to move twice.", 60);
+    display.drawText(10,13, "%c{yellow}@%c{white}: You are a trader. Move back and forth between cities and avoid getting caught! By default you move twice as fast as bandits.", 60);
+    display.drawText(10,17, "%c{#013220}*%c{white}: Forest. Bandits cannot see you when you are in a forest unless within 5 tiles of you.", 60);
+    display.drawText(27,20, "Press [Enter] to start!");
   },
   handleInput: function(inputType, inputData) {
     if (inputType === 'keydown') {
