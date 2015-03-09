@@ -60,6 +60,7 @@ Game._createEntity = function(what, freeCells, x, y) {
     var x = parseInt(parts[0]);
     var y = parseInt(parts[1]);
   }
+  freeCells = _.without(freeCells, _.findWhere(freeCells, x+','+y));
   return new what(x, y);
 }
 
