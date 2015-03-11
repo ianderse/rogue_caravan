@@ -110,6 +110,7 @@ Game._reset = function() {
   Game.scheduler.clear();
   Game.display.clear();
   Game.enemy = null;
+  Game.trader = null;
   Game.map = null;
   Game.player = null;
   Game.score = 0;
