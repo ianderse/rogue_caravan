@@ -54,8 +54,7 @@ Player.prototype.handleEvent = function(e) {
 Player.prototype.act = function() {
     Game.engine.lock();
     Game.turnCounter += 1;
-    console.log(Game.turnCounter);
-    if(Game.turnCounter % 50 == 0) {
+    if(Game.turnCounter % 100 == 0) {
       Game._addEnemy();
     }
     window.addEventListener("keydown", this);

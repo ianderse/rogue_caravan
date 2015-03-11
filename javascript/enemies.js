@@ -59,6 +59,6 @@ Enemy.prototype._checkTerrain = function () {
   } else if(Game.map[this._x+","+this._y][0] == " ") {
     this.speed = 50;
   } else if(Game.map[this._x+","+this._y][0] == "*") {
-    this.speed = 50;
+    this.speed = 33;
   };
 }
