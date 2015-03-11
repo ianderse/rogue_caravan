@@ -30,6 +30,14 @@ Player.prototype.handleEvent = function(e) {
   keyMap[37] = 6;
 
   var code = e.keyCode;
+  if (code === 32) {
+    _.each(Game.enemy, function(enemy) {
+      enemy.act();
+    });
+    _.each(Game.trader, function(trader) {
+      trader.act();
+    });
+  }
   if (!(code in keyMap)) { return; }
 
   var dir = ROT.DIRS[8][keyMap[code]];
@@ -56,14 +64,16 @@ Player.prototype.handleEvent = function(e) {
 }
 
 Player.prototype.act = function() {
-    Game.engine.lock();
-    Game.turnCounter += 1;
-    if(Game.turnCounter % 100 === 0) {
-      Game._addEnemy();
-    } else if(Math.floor((Math.random() * 100) + 1) <= 2) {
-      Game._addTrader();
-    };
-    window.addEventListener("keydown", this);
+  Game.engine.lock();
+  Game.turnCounter += 1;
+  var randNum = Math.floor(Math.random() * 100) + 1;
+  console.log(randNum);
+  if(Game.turnCounter % 100 === 0) {
+    Game._addEnemy();
+  } else if(randNum <= 2) {
+    Game._addTrader();
+  };
+  window.addEventListener("keydown", this);
 }
 
 Player.prototype._checkCity = function() {
@@ -87,6 +97,9 @@ Player.prototype._checkMountain = function() {
   if (Game.map[key][0] == "^") {
     _.each(Game.enemy, function(enemy) {
       enemy.act();
+    });
+    _.each(Game.trader, function(trader) {
+      trader.act();
     });
   };
 }
