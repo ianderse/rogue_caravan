@@ -20,6 +20,7 @@ Trader.prototype.removeTrader = function() {
   Game.freeCells.push(key);
   var trader = this;
   Game.trader = _.filter(Game.trader, function(x) { return x != trader });
+  Game._drawMap();
 }
 
 Trader.prototype.act = function() {
