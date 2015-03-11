@@ -60,9 +60,9 @@ Player.prototype.act = function() {
     Game.turnCounter += 1;
     if(Game.turnCounter % 100 === 0) {
       Game._addEnemy();
-    } else if(Math.floor((Math.random() * 100) + 1) <= 5) {
+    } else if(Math.floor((Math.random() * 100) + 1) <= 2) {
       Game._addTrader();
-    }
+    };
     window.addEventListener("keydown", this);
 }
 

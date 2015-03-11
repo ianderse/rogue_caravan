@@ -1,8 +1,8 @@
 Game.Screen = {};
 
 Game.Screen.startScreen = {
-  enter: function() {    console.log("Entered start screen."); },
-  exit: function() { console.log("Exited start screen."); },
+  enter: function() {},
+  exit: function() {},
   render: function(display) {
     display.drawText(32,3, "%c{yellow}Rogue Caravan");
     display.drawText(10,5, "%c{red}B%c{white}: Bandits. If they catch you, game over.");
@@ -22,8 +22,8 @@ Game.Screen.startScreen = {
 }
 
 Game.Screen.playScreen = {
-  enter: function() {    console.log("Entered play screen."); },
-  exit: function() { console.log("Exited play screen."); },
+  enter: function() {},
+  exit: function() {},
   render: function(display) {
     Game._generateMap();
     Game.scheduler.add(Game.player, true);
@@ -42,10 +42,9 @@ Game.Screen.playScreen = {
 }
 
 Game.Screen.gameOverScreen = {
-  enter: function() {    console.log("Entered lose screen."); },
+  enter: function() {},
   exit: function() {
     Game._reset();
-    console.log("Exited lose screen.");
   },
   render: function(display) {
     display.drawText(32, 5, "%b{red}The Bandits caught you!");
