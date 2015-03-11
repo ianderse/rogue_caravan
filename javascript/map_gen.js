@@ -31,7 +31,6 @@ Game._generateMap = function () {
   this._drawMap();
   this.player = this._createEntity(Player, Game.freeCells, 3, 10);
   this.enemy = [this._createEntity(Enemy, Game.freeCells)];
-
   for(var i = 0; i < 4; i++) {
     this.enemy.push(this._createEntity(Enemy, Game.freeCells));
   }

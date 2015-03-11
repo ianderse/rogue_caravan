@@ -10,6 +10,7 @@ var Game = {
   turnCounter: 0,
   scheduler: new ROT.Scheduler.Speed(),
   freeCells: [],
+  trader: [],
 
   init: function() {
     this.display = new ROT.Display();
@@ -68,11 +69,22 @@ Game._createEntity = function(what, freeCells, x, y) {
 Game._addEnemy = function() {
   var topOrBottom = [1, 24].random();
   var leftOrRight = [1, 79].random();
-  console.log('test');
   this.enemy.push(this._createEntity(Enemy, [], leftOrRight, topOrBottom));
   var enemy = _.last(this.enemy);
   Game.scheduler.add(enemy, true);
   enemy._draw();
+}
+
+Game._addTrader = function() {
+  var whichCity = [Game.firstCityKey, Game.secondCityKey].random();
+  var parts = whichCity.split(",");
+  var x = parseInt(parts[0]);
+  var y = parseInt(parts[1]);
+  Game.trader.push(this._createEntity(Trader, Game.freeCells, x, y));
+  var trader = _.last(Game.trader);
+  trader.startCity = whichCity;
+  Game.scheduler.add(trader, true);
+  trader._draw();
 }
 
 Game._resetEnemies = function(num) {

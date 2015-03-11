@@ -28,13 +28,13 @@ Enemy.prototype.act = function() {
   }
   var topo = [4,8].random();
   var astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
+  /* if (Game.player._x - this._x + same for Y < Game.trader._x - this._x + same for Y), go after player, else trader */
 
   var path = [];
   var pathCallback = function(x, y) {
     path.push([x, y]);
   }
   astar.compute(this._x, this._y, pathCallback);
-
   path.shift();
 
   if (path.length <= 1) {

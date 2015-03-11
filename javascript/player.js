@@ -54,8 +54,10 @@ Player.prototype.handleEvent = function(e) {
 Player.prototype.act = function() {
     Game.engine.lock();
     Game.turnCounter += 1;
-    if(Game.turnCounter % 100 == 0) {
+    if(Game.turnCounter % 100 === 0) {
       Game._addEnemy();
+    } else if(Game.turnCounter === 10) {
+      Game._addTrader();
     }
     window.addEventListener("keydown", this);
 }
