@@ -78,6 +78,22 @@ Player.prototype.act = function() {
 
 Player.prototype._checkCity = function() {
   var key = this._x + "," + this._y;
+  var passableCallback = function(x, y) {
+    return (x+","+y in Game.map);
+  };
+  var firstParts = Game.firstCityKey.split(",");
+  var firstX = parseInt(firstParts[0]);
+  var firstY = parseInt(firstParts[1]);
+  var astar = new ROT.Path.AStar(firstX, firstY, passableCallback, {topology: 8});
+  var secondParts = Game.secondCityKey.split(",");
+  var secondX = parseInt(secondParts[0]);
+  var secondY = parseInt(secondParts[1]);
+  var cityToCityPath = [];
+  var cityPathCallback = function(x, y) {
+    cityToCityPath.push([x, y]);
+  }
+  astar.compute(secondX, secondY, cityPathCallback);
+
   if (Game.map[key][0] == "C" && Game.map[key][1]['target'] == true) {
     if(Game.map[Game.firstCityKey][1]['target'] == true) {
       Game.map[Game.firstCityKey][1]['target'] = false;
@@ -86,7 +102,7 @@ Player.prototype._checkCity = function() {
       Game.map[Game.secondCityKey][1]['target'] = false;
       Game.map[Game.firstCityKey][1]['target'] = true;
     };
-    Game.score += 1000;
+    Game.score += cityToCityPath.length * 15;
     Game.display.drawText(5, 0, Game.score.toString());
     Game._resetEnemies(Game.enemy.length);
   };

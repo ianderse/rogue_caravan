@@ -109,8 +109,8 @@ Game._reset = function() {
   Game.gameOver = false;
   Game.scheduler.clear();
   Game.display.clear();
-  Game.enemy = null;
-  Game.trader = null;
+  Game.enemy = [];
+  Game.trader = [];
   Game.map = null;
   Game.player = null;
   Game.score = 0;
