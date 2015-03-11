@@ -27,21 +27,42 @@ Enemy.prototype.act = function() {
     return (x+","+y in Game.map);
   }
   var topo = [4,8].random();
-  var astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
-  /* if (Game.player._x - this._x + same for Y < Game.trader._x - this._x + same for Y), go after player, else trader */
+  var target = 'player';
+  var enemy = this;
+  var traderObj = null;
+
+
+  if(Game.trader.length > 0) {
+    _.each(Game.trader, function(trader) {
+      if ((Math.abs(Game.player._x - enemy._x) + Math.abs(Game.player._y - enemy._y)) < (Math.abs(trader._y - enemy._y) + Math.abs(trader._y - enemy._y))) {
+        astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
+        target = 'player';
+      } else {
+        astar = new ROT.Path.AStar(trader._x, trader._y, passableCallback, {topology: topo});
+        target = 'trader';
+        traderObj = trader;
+      }
+    });
+  } else {
+    var astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
+    target = 'player'
+  }
 
   var path = [];
   var pathCallback = function(x, y) {
     path.push([x, y]);
   }
   astar.compute(this._x, this._y, pathCallback);
+
   path.shift();
 
-  if (path.length <= 1) {
+  if (path.length <= 1 && target === 'player') {
     Game.gameOver = true;
     Game.engine.lock();
+  } else if (path.length <= 1 && target === 'trader') {
+    traderObj.removeTrader();
   } else {
-    if(Game.player.isVisible() == true || path.length < 5 ) {
+    if(Game.player.isVisible() == true || path.length < 5 && target === 'player') {
       x = path[0][0];
       y = path[0][1];
       Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);

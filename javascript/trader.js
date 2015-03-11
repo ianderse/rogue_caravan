@@ -13,6 +13,15 @@ Trader.prototype.getX = function() { return this._x; }
 Trader.prototype.getY = function() { return this._y; }
 Trader.prototype.getSpeed = function() { return this.speed; }
 
+Trader.prototype.removeTrader = function() {
+  var key = this.getX() + ',' + this.getY();
+  Game.map[key][0] = ' ';
+  Game.scheduler.remove(this);
+  Game.freeCells.push(key);
+  var trader = this;
+  Game.trader = _.filter(Game.trader, function(x) { return x != trader });
+}
+
 Trader.prototype.act = function() {
   if(this.startCity === Game.firstCityKey) {
     var parts = Game.secondCityKey.split(",");
@@ -37,7 +46,7 @@ Trader.prototype.act = function() {
   path.shift();
 
   if (path.length <= 1) {
-    /* delete trader if path ended or if bandit catches */
+    this._removeTrader();
   } else {
     x = path[0][0];
     y = path[0][1];
