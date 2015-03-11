@@ -42,8 +42,16 @@ Player.prototype.handleEvent = function(e) {
   var newKey = newX + "," + newY;
 
   Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
-  this._x = newX;
-  this._y = newY;
+  if (newX === -1 || newX === 80) {
+    this._x;
+  } else {
+    this._x = newX;
+  };
+  if (newY === -1 || newY === 25) {
+    this._y;
+  } else {
+    this._y = newY;
+  }
   this._draw();
   this._checkCity();
   this._checkMountain();
