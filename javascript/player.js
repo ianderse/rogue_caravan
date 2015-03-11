@@ -25,13 +25,9 @@ Player.prototype.isVisible = function() {
 Player.prototype.handleEvent = function(e) {
   var keyMap = {};
   keyMap[38] = 0;
-  keyMap[33] = 1;
   keyMap[39] = 2;
-  keyMap[34] = 3;
   keyMap[40] = 4;
-  keyMap[35] = 5;
   keyMap[37] = 6;
-  keyMap[36] = 7;
 
   var code = e.keyCode;
   if (!(code in keyMap)) { return; }
@@ -64,7 +60,7 @@ Player.prototype.act = function() {
     Game.turnCounter += 1;
     if(Game.turnCounter % 100 === 0) {
       Game._addEnemy();
-    } else if(Game.turnCounter === 10) {
+    } else if(Math.floor((Math.random() * 100) + 1) <= 5) {
       Game._addTrader();
     }
     window.addEventListener("keydown", this);

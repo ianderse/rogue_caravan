@@ -30,15 +30,28 @@ Enemy.prototype.act = function() {
   var target = 'player';
   var enemy = this;
   var traderObj = null;
-
+  var path = [];
 
   if(Game.trader.length > 0) {
+
     _.each(Game.trader, function(trader) {
-      if ((Math.abs(Game.player._x - enemy._x) + Math.abs(Game.player._y - enemy._y)) < (Math.abs(trader._y - enemy._y) + Math.abs(trader._y - enemy._y))) {
-        astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
+      var playerPath = [];
+      var playerPathCallback = function(x, y) {
+        playerPath.push([x, y]);
+      };
+      var traderPath = [];
+      var traderPathCallback = function(x, y) {
+        traderPath.push([x, y]);
+      };
+      var playerAstar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
+      var traderAstar = new ROT.Path.AStar(trader._x, trader._y, passableCallback, {topology: topo});
+      playerAstar.compute(enemy._x, enemy._y, playerPathCallback);
+      traderAstar.compute(enemy._x, enemy._y, traderPathCallback);
+      if (playerPath.length < traderPath.length) {
+        astar = playerAstar;
         target = 'player';
       } else {
-        astar = new ROT.Path.AStar(trader._x, trader._y, passableCallback, {topology: topo});
+        astar = traderAstar;
         target = 'trader';
         traderObj = trader;
       }
@@ -52,8 +65,8 @@ Enemy.prototype.act = function() {
   var pathCallback = function(x, y) {
     path.push([x, y]);
   }
-  astar.compute(this._x, this._y, pathCallback);
 
+  astar.compute(this._x, this._y, pathCallback);
   path.shift();
 
   if (path.length <= 1 && target === 'player') {
@@ -61,6 +74,7 @@ Enemy.prototype.act = function() {
     Game.engine.lock();
   } else if (path.length <= 1 && target === 'trader') {
     traderObj.removeTrader();
+    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
   } else {
     if(Game.player.isVisible() == true || path.length < 5 && target === 'player') {
       x = path[0][0];
@@ -70,7 +84,15 @@ Enemy.prototype.act = function() {
       this._y = y;
       this._checkTerrain();
       this._draw();
-    };
+    } else if(traderObj && traderObj.isVisible() == true || path.length < 5 && target === 'trader') {
+      x = path[0][0];
+      y = path[0][1];
+      Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+      this._x = x;
+      this._y = y;
+      this._checkTerrain();
+      this._draw();
+    }
   };
 }
 

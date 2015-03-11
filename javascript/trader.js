@@ -20,7 +20,16 @@ Trader.prototype.removeTrader = function() {
   Game.freeCells.push(key);
   var trader = this;
   Game.trader = _.filter(Game.trader, function(x) { return x != trader });
-  Game._drawMap();
+  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+}
+
+Trader.prototype.isVisible = function() {
+  var key = this._x + "," + this._y;
+  if(Game.map[key][0] != "*") {
+    return true;
+  } else {
+    return false;
+  };
 }
 
 Trader.prototype.act = function() {
@@ -47,7 +56,8 @@ Trader.prototype.act = function() {
   path.shift();
 
   if (path.length <= 1) {
-    this._removeTrader();
+    this.removeTrader();
+    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
   } else {
     x = path[0][0];
     y = path[0][1];
