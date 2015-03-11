@@ -85,12 +85,12 @@ Game._resetEnemies = function(num) {
     this.enemy.push(this._createEntity(Enemy, Game.freeCells));
   };
 
+  Game._drawMap();
+
   _.each(Game.enemy, function(enemy) {
     Game.scheduler.add(enemy, true);
     enemy._draw();
   });
-
-  Game._drawMap();
 }
 
 Game._reset = function() {
