@@ -99,17 +99,17 @@ var changeCity = function (player) {
 }
 
 Player.prototype._checkCity = function() {
+  var firstParts = Game.firstCityKey.split(",");
+  var firstX = parseInt(firstParts[0]);
+  var firstY = parseInt(firstParts[1]);
+  var secondParts = Game.secondCityKey.split(",");
+  var secondX = parseInt(secondParts[0]);
+  var secondY = parseInt(secondParts[1]);
 
   var passableCallback = function(x, y) {
     return (x+","+y in Game.map);
   };
-  var firstParts = Game.firstCityKey.split(",");
-  var firstX = parseInt(firstParts[0]);
-  var firstY = parseInt(firstParts[1]);
   var astar = new ROT.Path.AStar(firstX, firstY, passableCallback, {topology: 8});
-  var secondParts = Game.secondCityKey.split(",");
-  var secondX = parseInt(secondParts[0]);
-  var secondY = parseInt(secondParts[1]);
   var cityToCityPath = [];
   var cityPathCallback = function(x, y) {
     cityToCityPath.push([x, y]);
