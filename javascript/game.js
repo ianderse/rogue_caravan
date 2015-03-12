@@ -8,6 +8,7 @@ var Game = {
   firstCityKey: null,
   secondCityKey: null,
   turnCounter: 0,
+  pointCounter: 0,
   scheduler: new ROT.Scheduler.Speed(),
   freeCells: [],
   trader: [],
@@ -115,5 +116,6 @@ Game._reset = function() {
   Game.player = null;
   Game.score = 0;
   Game.turnCounter = 0;
+  Game.pointCounter = 0;
   Game.freeCells = [];
 }

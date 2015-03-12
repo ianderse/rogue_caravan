@@ -74,6 +74,7 @@ Player.prototype._checkBounds = function(x, y, newX, newY) {
 Player.prototype.act = function() {
   Game.engine.lock();
   Game.turnCounter += 1;
+  Game.pointCounter += 1;
   var randNum = Math.floor(Math.random() * 100) + 1;
   if(Game.turnCounter % 100 === 0) {
     Game._addEnemy();
@@ -116,8 +117,8 @@ Player.prototype._checkCity = function() {
   astar.compute(secondX, secondY, cityPathCallback);
 
   if(changeCity(this)) {
-    Game.score += (cityToCityPath.length * 15) - (Game.turnCounter * 5);
-    Game.turnCounter = 0;
+    Game.score += (cityToCityPath.length * 20) - (Game.pointCounter * 5);
+    Game.pointCounter = 0;
     Game._resetEnemies(Game.enemy.length);
   };
 }
