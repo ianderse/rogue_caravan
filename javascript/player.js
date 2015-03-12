@@ -102,8 +102,8 @@ Player.prototype._checkCity = function() {
       Game.map[Game.secondCityKey][1]['target'] = false;
       Game.map[Game.firstCityKey][1]['target'] = true;
     };
-    Game.score += cityToCityPath.length * 15;
-    Game.display.drawText(5, 0, Game.score.toString());
+    Game.score += (cityToCityPath.length * 15) - (Game.turnCounter * 5);
+    Game.turnCounter = 0;
     Game._resetEnemies(Game.enemy.length);
   };
 }

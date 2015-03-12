@@ -4,14 +4,18 @@ Game.Screen.startScreen = {
   enter: function() {},
   exit: function() {},
   render: function(display) {
-    display.drawText(32,1, "%c{yellow}Rogue Caravan");
-    display.drawText(10,3,"%c{blue}T%c{white}: Traders. They will move between cities and distract the bandits.");
-    display.drawText(10,5, "%c{red}B%c{white}: Bandits. If they catch you, game over.");
-    display.drawText(10,7, "%c{#4B2803}^%c{white}: Mountains. When Bandits cross mountains, they are slowed by half, but when you move through them the bandits move twice.", 60);
-    display.drawText(10,11, "%c{yellow}@%c{white}: You are a trader.  Avoid getting caught by bandits! By default you move twice as fast as bandits.", 60);
-    display.drawText(10,14, "%c{#013220}*%c{white}: Forest. Bandits cannot see you when you are in a forest unless within 5 tiles of you.", 60);
-    display.drawText(10,17, "%c{white}C: City. Start by heading to the city at the right, then move back and forth between cities to gain points.", 60);
-    display.drawText(27,22, "Press [Enter] to start!");
+    display.drawText(32,1, "%c{yellow}Rogue Caravan", 45);
+    display.drawText(0,3,"%c{blue}T%c{white}: Traders. They will move between cities and distract the bandits.", 45);
+    display.drawText(0,6, "%c{red}B%c{white}: Bandits. If they catch you, game over.", 45);
+    display.drawText(0,8, "%c{#4B2803}^%c{white}: Mountains. When Bandits cross mountains, they are slowed by half, but when you move through them the bandits move twice.", 45);
+    display.drawText(0,12, "%c{yellow}@%c{white}: You are a trader.  Avoid getting caught by bandits! By default you move twice as fast as bandits.", 45);
+    display.drawText(0,16, "%c{#013220}*%c{white}: Forest. Bandits cannot see you when you are in a forest unless within 5 tiles of you.", 45);
+    display.drawText(0,19, "%c{white}C: City. Start by heading to the city at the right, then move back and forth between cities to gain points.", 45);
+    display.drawText(58,3, "%c{yellow}Controls");
+    display.drawText(50,5, "%c{white}Arrow Keys to move, space to wait.");
+    display.drawText(58,7, "%c{yellow}Scoring");
+    display.drawText(50,9, "%c{white}The quicker you make it to the city, and the further apart the cities, the more points you get.", 28);
+    display.drawText(27,23, "Press [Enter] to start!");
   },
   handleInput: function(inputType, inputData) {
     if (inputType === 'keydown') {
