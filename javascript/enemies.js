@@ -33,7 +33,6 @@ Enemy.prototype.act = function() {
   var path = [];
 
   if(Game.trader.length > 0) {
-
     _.each(Game.trader, function(trader) {
       var playerPath = [];
       var playerPathCallback = function(x, y) {
@@ -90,6 +89,23 @@ Enemy.prototype.act = function() {
       Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
       this._x = x;
       this._y = y;
+      this._checkTerrain();
+      this._draw();
+    } else {
+      var options = [0,1,-1];
+      var newX = this._x + options.random();
+      var newY = this._y + options.random();
+      Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+      if (newX === -1 || newX === 80) {
+        this._x;
+      } else {
+        this._x = newX;
+      };
+      if (newY === -1 || newY === 25) {
+        this._y;
+      } else {
+        this._y = newY;
+      };
       this._checkTerrain();
       this._draw();
     }
