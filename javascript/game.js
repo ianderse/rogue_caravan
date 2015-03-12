@@ -67,9 +67,9 @@ Game._createEntity = function(what, freeCells, x, y) {
 }
 
 Game._addEnemy = function() {
-  var topOrBottom = [1, 24].random();
-  var leftOrRight = [1, 79].random();
-  this.enemy.push(this._createEntity(Enemy, [], leftOrRight, topOrBottom));
+  var y = [1, 24, 12].random();
+  var x = [1, 79, 40].random();
+  this.enemy.push(this._createEntity(Enemy, [], x, y));
   var enemy = _.last(this.enemy);
   Game.scheduler.add(enemy, true);
   enemy._draw();

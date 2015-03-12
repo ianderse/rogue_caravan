@@ -37,7 +37,7 @@ Player.prototype.handleEvent = function(e) {
     _.each(Game.trader, function(trader) {
       trader.act();
     });
-  }
+  };
   if (!(code in keyMap)) { return; }
 
   var dir = ROT.DIRS[8][keyMap[code]];
@@ -46,16 +46,10 @@ Player.prototype.handleEvent = function(e) {
   var newKey = newX + "," + newY;
 
   Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
-  if (newX === -1 || newX === 80) {
-    this._x;
-  } else {
-    this._x = newX;
-  };
-  if (newY === -1 || newY === 25) {
-    this._y;
-  } else {
-    this._y = newY;
-  }
+
+  var newCoords = this._checkBounds(this._x, this._y, newX, newY)
+  this._x = newCoords[0];
+  this._y = newCoords[1];
   this._draw();
   this._checkCity();
   this._checkMountain();
@@ -63,11 +57,24 @@ Player.prototype.handleEvent = function(e) {
   Game.engine.unlock();
 }
 
+Player.prototype._checkBounds = function(x, y, newX, newY) {
+  if (newX === -1 || newX === 80) {
+    x;
+  } else {
+    x = newX;
+  };
+  if (newY === -1 || newY === 25) {
+    y;
+  } else {
+    y = newY;
+  }
+  return [x,y];
+}
+
 Player.prototype.act = function() {
   Game.engine.lock();
   Game.turnCounter += 1;
   var randNum = Math.floor(Math.random() * 100) + 1;
-  console.log(randNum);
   if(Game.turnCounter % 100 === 0) {
     Game._addEnemy();
   } else if(randNum <= 2) {
@@ -76,8 +83,22 @@ Player.prototype.act = function() {
   window.addEventListener("keydown", this);
 }
 
+var changeCity = function (player) {
+  var key = player._x + "," + player._y;
+  if (Game.map[key][0] == "C" && Game.map[key][1]['target'] == true) {
+    if(Game.map[Game.firstCityKey][1]['target'] == true) {
+      Game.map[Game.firstCityKey][1]['target'] = false;
+      Game.map[Game.secondCityKey][1]['target'] = true;
+    } else if (Game.map[Game.secondCityKey][1]['target'] == true) {
+      Game.map[Game.secondCityKey][1]['target'] = false;
+      Game.map[Game.firstCityKey][1]['target'] = true;
+    };
+    return true;
+  };
+}
+
 Player.prototype._checkCity = function() {
-  var key = this._x + "," + this._y;
+
   var passableCallback = function(x, y) {
     return (x+","+y in Game.map);
   };
@@ -94,14 +115,7 @@ Player.prototype._checkCity = function() {
   }
   astar.compute(secondX, secondY, cityPathCallback);
 
-  if (Game.map[key][0] == "C" && Game.map[key][1]['target'] == true) {
-    if(Game.map[Game.firstCityKey][1]['target'] == true) {
-      Game.map[Game.firstCityKey][1]['target'] = false;
-      Game.map[Game.secondCityKey][1]['target'] = true;
-    } else if (Game.map[Game.secondCityKey][1]['target'] == true) {
-      Game.map[Game.secondCityKey][1]['target'] = false;
-      Game.map[Game.firstCityKey][1]['target'] = true;
-    };
+  if(changeCity(this)) {
     Game.score += (cityToCityPath.length * 15) - (Game.turnCounter * 5);
     Game.turnCounter = 0;
     Game._resetEnemies(Game.enemy.length);
