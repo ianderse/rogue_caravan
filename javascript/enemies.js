@@ -76,21 +76,9 @@ Enemy.prototype.act = function() {
     Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
   } else {
     if(Game.player.isVisible() == true || path.length < 5 && target === 'player') {
-      x = path[0][0];
-      y = path[0][1];
-      Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
-      this._x = x;
-      this._y = y;
-      this._checkTerrain();
-      this._draw();
+      this._setPath(path);
     } else if(traderObj && traderObj.isVisible() == true || path.length < 5 && target === 'trader') {
-      x = path[0][0];
-      y = path[0][1];
-      Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
-      this._x = x;
-      this._y = y;
-      this._checkTerrain();
-      this._draw();
+      this._setPath(path);
     } else {
       var options = [0,1,-1];
       var newX = this._x + options.random();
@@ -110,6 +98,16 @@ Enemy.prototype.act = function() {
       this._draw();
     }
   };
+}
+
+Enemy.prototype._setPath = function(path) {
+  x = path[0][0];
+  y = path[0][1];
+  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+  this._x = x;
+  this._y = y;
+  this._checkTerrain();
+  this._draw();
 }
 
 Enemy.prototype._checkTerrain = function () {
