@@ -11,7 +11,6 @@ Enemy.prototype.getY = function() { return this._y; }
 
 Enemy.prototype.removeEnemy = function() {
   var key = this.getX() + ',' + this.getY();
-  Game.map[key][0] = ' ';
   Game.scheduler.remove(this);
   Game.freeCells.push(key);
 }
@@ -72,8 +71,9 @@ Enemy.prototype.act = function() {
     Game.gameOver = true;
     Game.engine.lock();
   } else if (path.length <= 1 && target === 'trader') {
-    traderObj.removeTrader();
-    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+    traderObj.removeTrader(this);
+    var glyph = Game.map[this._x+","+this._y]
+    Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
   } else {
     if(Game.player.isVisible() == true || path.length < 5 && target === 'player') {
       this._setPath(path);
@@ -83,7 +83,8 @@ Enemy.prototype.act = function() {
       var options = [0,1,-1];
       var newX = this._x + options.random();
       var newY = this._y + options.random();
-      Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+      var glyph = Game.map[this._x+","+this._y]
+      Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
       if (newX === -1 || newX === 80) {
         this._x;
       } else {
@@ -94,7 +95,7 @@ Enemy.prototype.act = function() {
       } else {
         this._y = newY;
       };
-      this._checkTerrain();
+      checkTerrain(this);
       this._draw();
     }
   };
@@ -103,19 +104,10 @@ Enemy.prototype.act = function() {
 Enemy.prototype._setPath = function(path) {
   x = path[0][0];
   y = path[0][1];
-  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+  var glyph = Game.map[this._x+","+this._y]
+  Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
   this._x = x;
   this._y = y;
-  this._checkTerrain();
+  checkTerrain(this);
   this._draw();
-}
-
-Enemy.prototype._checkTerrain = function () {
-  if(Game.map[this._x+","+this._y][0] == "^") {
-    this.speed = 25;
-  } else if(Game.map[this._x+","+this._y][0] == " ") {
-    this.speed = 50;
-  } else if(Game.map[this._x+","+this._y][0] == "*") {
-    this.speed = 33;
-  };
 }

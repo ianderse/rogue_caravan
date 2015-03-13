@@ -13,19 +13,23 @@ Trader.prototype.getX = function() { return this._x; }
 Trader.prototype.getY = function() { return this._y; }
 Trader.prototype.getSpeed = function() { return this.speed; }
 
-Trader.prototype.removeTrader = function() {
+Trader.prototype.removeTrader = function(entity) {
   var key = this.getX() + ',' + this.getY();
-  Game.map[key][0] = ' ';
   Game.scheduler.remove(this);
   Game.freeCells.push(key);
   var trader = this;
   Game.trader = _.filter(Game.trader, function(x) { return x != trader });
-  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+  if(entity) {
+    entity._draw();
+  } else {
+    var glyph = Game.map[this._x+","+this._y]
+    Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
+  }
 }
 
 Trader.prototype.isVisible = function() {
   var key = this._x + "," + this._y;
-  if(Game.map[key][0] != "*") {
+  if(Game.map[key] != Game.Tile.forestTile) {
     return true;
   } else {
     return false;
@@ -57,24 +61,16 @@ Trader.prototype.act = function() {
 
   if (path.length <= 1) {
     this.removeTrader();
-    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+    var glyph = Game.map[this._x+","+this._y]
+    Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
   } else {
     x = path[0][0];
     y = path[0][1];
-    Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+    var glyph = Game.map[this._x+","+this._y]
+    Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
     this._x = x;
     this._y = y;
-    this._checkTerrain();
+    checkTerrain(this);
     this._draw();
-  };
-}
-
-Trader.prototype._checkTerrain = function () {
-  if(Game.map[this._x+","+this._y][0] == "^") {
-    this.speed = 25;
-  } else if(Game.map[this._x+","+this._y][0] == " ") {
-    this.speed = 50;
-  } else if(Game.map[this._x+","+this._y][0] == "*") {
-    this.speed = 33;
   };
 }

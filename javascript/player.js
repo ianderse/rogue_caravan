@@ -15,7 +15,7 @@ Player.prototype.getSpeed = function() { return this.speed; }
 
 Player.prototype.isVisible = function() {
   var key = this._x + "," + this._y;
-  if(Game.map[key][0] != "*") {
+  if(Game.map[key] != Game.Tile.forestTile) {
     return true;
   } else {
     return false;
@@ -44,8 +44,8 @@ Player.prototype.handleEvent = function(e) {
   var newX = this._x + dir[0];
   var newY = this._y + dir[1];
   var newKey = newX + "," + newY;
-
-  Game.display.draw(this._x, this._y, Game.map[this._x+","+this._y][0], Game.map[this._x+","+this._y][1]['color']);
+  var glyph = Game.map[this._x+","+this._y]
+  Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
 
   var newCoords = this._checkBounds(this._x, this._y, newX, newY)
   this._x = newCoords[0];
@@ -86,13 +86,13 @@ Player.prototype.act = function() {
 
 var changeCity = function (player) {
   var key = player._x + "," + player._y;
-  if (Game.map[key][0] == "C" && Game.map[key][1]['target'] == true) {
-    if(Game.map[Game.firstCityKey][1]['target'] == true) {
-      Game.map[Game.firstCityKey][1]['target'] = false;
-      Game.map[Game.secondCityKey][1]['target'] = true;
-    } else if (Game.map[Game.secondCityKey][1]['target'] == true) {
-      Game.map[Game.secondCityKey][1]['target'] = false;
-      Game.map[Game.firstCityKey][1]['target'] = true;
+  if (Game.map[key] == Game.Tile.cityTileTarget) {
+    if(Game.map[Game.firstCityKey].isTarget()) {
+      Game.map[Game.firstCityKey] = Game.Tile.cityTile;
+      Game.map[Game.secondCityKey] = Game.Tile.cityTileTarget;
+    } else if (Game.map[Game.secondCityKey].isTarget()) {
+      Game.map[Game.secondCityKey] = Game.Tile.cityTile;
+      Game.map[Game.firstCityKey] = Game.Tile.cityTileTarget;
     };
     return true;
   };
@@ -125,7 +125,7 @@ Player.prototype._checkCity = function() {
 
 Player.prototype._checkMountain = function() {
   var key = this._x + "," + this._y;
-  if (Game.map[key][0] == "^") {
+  if (Game.map[key] == Game.Tile.mountainTile) {
     _.each(Game.enemy, function(enemy) {
       enemy.act();
     });
