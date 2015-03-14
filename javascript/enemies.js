@@ -3,6 +3,7 @@ var Enemy = function(x, y) {
   this._y = y;
   this._draw();
   this.speed = 50;
+  this.currentTarget = Game.player;
 }
 
 Enemy.prototype.getSpeed = function() { return this.speed; }
@@ -26,9 +27,7 @@ Enemy.prototype.act = function() {
     return (x+","+y in Game.map);
   }
   var topo = [4,8].random();
-  var target = 'player';
   var enemy = this;
-  var traderObj = null;
   var path = [];
 
   if(Game.trader.length > 0) {
@@ -46,38 +45,43 @@ Enemy.prototype.act = function() {
       playerAstar.compute(enemy._x, enemy._y, playerPathCallback);
       traderAstar.compute(enemy._x, enemy._y, traderPathCallback);
       if (playerPath.length < traderPath.length) {
-        astar = playerAstar;
-        target = 'player';
+        if(enemy.currentPath && (enemy.currentPath.length < playerPath.length)) {
+          path = enemy.currentPath;
+        };
+        path = playerPath;
+        enemy.currentTarget = Game.player;
+        enemy.currentPath = playerPath;
       } else {
-        astar = traderAstar;
-        target = 'trader';
-        traderObj = trader;
-      }
+        if(enemy.currentPath && (enemy.currentPath.length < traderPath.length)) {
+          path = enemy.currentPath;
+        };
+        path = traderPath;
+        enemy.currentTarget = trader;
+        enemy.currentPath = traderPath;
+      };
     });
   } else {
     var astar = new ROT.Path.AStar(x, y, passableCallback, {topology: topo});
-    target = 'player'
+    var pathCallback = function(x, y) {
+      path.push([x, y]);
+    }
+    astar.compute(this._x, this._y, pathCallback);
+    enemy.currentTarget = Game.player;
   }
 
-  var path = [];
-  var pathCallback = function(x, y) {
-    path.push([x, y]);
-  }
-
-  astar.compute(this._x, this._y, pathCallback);
   path.shift();
 
-  if (path.length <= 1 && target === 'player') {
+  if (path.length <= 1 && this.currentTarget.constructor === Player) {
     Game.gameOver = true;
     Game.engine.lock();
-  } else if (path.length <= 1 && target === 'trader') {
-    traderObj.removeTrader(this);
+  } else if (path.length <= 1 && this.currentTarget.constructor === Trader) {
+    enemy.currentTarget.removeTrader(this);
     var glyph = Game.map[this._x+","+this._y]
     Game.display.draw(this._x, this._y, glyph.getChar(), glyph.getForeground());
   } else {
-    if(Game.player.isVisible() == true || path.length < 5 && target === 'player') {
+    if(this.currentTarget.constructor === Player && (Game.player.isVisible() == true || path.length < 5)) {
       this._setPath(path);
-    } else if(traderObj && traderObj.isVisible() == true || path.length < 5 && target === 'trader') {
+    } else if(enemy.currentTarget.constructor === Trader && (enemy.currentTarget.isVisible() == true || path.length < 5)) {
       this._setPath(path);
     } else {
       var options = [0,1,-1];
